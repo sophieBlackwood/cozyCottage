@@ -12,41 +12,46 @@
 <div id="game">
     <section id="outside" class="scene active">
         <div class="sky"></div>
-        <div class="weather-layer"></div>
+        <div class="rain-container" id="rainBox"></div>
+        
         <div class="ground">
+            <img src="tree1.png" class="pixel-tree tree-left">
+            <img src="tree1.png" class="pixel-tree tree-right">
+            
             <div class="pebble-path"></div>
-            <div class="cottage-container" onclick="enterHouse()">
+            
+            <div class="cottage-wrap" onclick="enterHouse()">
                 <img src="cottage.png" alt="Cottage" class="pixel-cottage">
-                <div class="smoke-stack"></div>
+                <div class="smoke-chimney"></div>
             </div>
         </div>
     </section>
 
     <section id="inside" class="scene">
-        <div class="interior-wrap">
-            <div class="window-light"></div>
-            <div class="fireplace-glow"></div>
+        <div class="interior-bg">
+            <div class="window-sunlight"></div>
+            <div class="fireplace-flicker"></div>
             
-            <div class="furniture">
-                <div class="chair left">🪑</div>
+            <div class="furniture-set">
+                <div class="chair">🪑</div>
                 <div class="table">
                     <div id="candle" class="candle" onclick="toggleCandle()"></div>
-                    <div class="books">
-                        <span class="book-item" onclick="openBook('ballet')">🩰</span>
-                        <span class="book-item" onclick="openBook('landscape')">🌄</span>
+                    <div class="book-stack">
+                        <span class="clickable-book" onclick="openBook('ballet')">🩰</span>
+                        <span class="clickable-book" onclick="openBook('landscape')">🌄</span>
                     </div>
                 </div>
-                <div class="chair right">🪑</div>
+                <div class="chair">🪑</div>
             </div>
 
-            <div class="cat" id="cat">🐈</div>
+            <div class="white-cat" id="cat">🐈</div>
         </div>
     </section>
 
     <section id="bookWorld" class="scene">
-        <div class="page-turning-wrap">
+        <div class="book-ui">
             <div id="bookContent"></div>
-            <button class="close-btn" onclick="closeBook()">Return to Cottage</button>
+            <button class="close-btn" onclick="closeBook()">Close Book</button>
         </div>
     </section>
 </div>
