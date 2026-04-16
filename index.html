@@ -1,46 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Cozy Cottage</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Cozy Cottage</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="app">
+<div id="fade"></div>
 
-  <!-- 🌲 Cottage Scene -->
-  <section id="cottage" class="scene active">
-    <h1 class="title">My Little Cottage</h1>
+<div id="game">
 
-    <div class="bookshelf">
-      <div class="book" onclick="goTo('forest')">🌿</div>
-      <div class="book" onclick="goTo('tea')">🍵</div>
-      <div class="book" onclick="goTo('journal')">📖</div>
+  <!-- 🌲 OUTSIDE -->
+  <section id="outside" class="scene active">
+    <div class="sky"></div>
+    <div class="ground"></div>
+
+    <div class="cottage" onclick="enterHouse()">
+      <div class="roof"></div>
+      <div class="door">🚪</div>
+      <div class="window-glow"></div>
+      <div class="smoke"></div>
     </div>
 
-    <p class="hint">Click a book to explore</p>
+    <p class="hint">click the door</p>
   </section>
 
-  <!-- 🌿 Forest -->
-  <section id="forest" class="scene">
-    <h2>Whispering Forest</h2>
-    <p>The trees hum softly around you...</p>
-    <button onclick="goTo('cottage')">← Back to Cottage</button>
+  <!-- 🏡 INSIDE -->
+  <section id="inside" class="scene">
+    <div class="room">
+
+      <div class="fireplace"></div>
+
+      <div class="table">
+        <div id="candle" class="candle" onclick="toggleCandle()"></div>
+
+        <div class="book" onclick="openBook('ballet')">🩰</div>
+        <div class="book" onclick="openBook('landscape')">🌄</div>
+        <div class="book" onclick="openBook('forest')">🌲</div>
+      </div>
+
+      <div class="cat" id="cat">🐈</div>
+
+    </div>
   </section>
 
-  <!-- 🍵 Tea Room -->
-  <section id="tea" class="scene">
-    <h2>Tea Corner</h2>
-    <p>A warm cup waits just for you.</p>
-    <button onclick="goTo('cottage')">← Back to Cottage</button>
-  </section>
-
-  <!-- 📖 Journal -->
-  <section id="journal" class="scene">
-    <h2>Your Journal</h2>
-    <textarea placeholder="Write your thoughts..."></textarea>
-    <button onclick="goTo('cottage')">← Back to Cottage</button>
+  <!-- 📖 BOOK WORLD -->
+  <section id="bookWorld" class="scene">
+    <div id="bookOverlay"></div>
+    <div id="bookContent"></div>
+    <button onclick="closeBook()">Close</button>
   </section>
 
 </div>
