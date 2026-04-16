@@ -11,7 +11,6 @@ function setScene(id) {
 
 document.querySelector(".cottage-wrap").onclick = () => setScene("inside");
 
-/* ADVANCED ATMOSPHERE ENGINE */
 let time = 0; 
 function skyLogic() {
     const sun = document.getElementById("sun");
@@ -19,11 +18,11 @@ function skyLogic() {
     const sky = document.getElementById("sky-layer");
     const game = document.getElementById("game");
 
-    time += 0.00008; // Very slow, realistic passage
+    time += 0.00008; 
     if (time > 1) time = 0;
 
     let x = 5 + time * 90;
-    let y = Math.sin(time * Math.PI) * -65 + 85;
+    let y = Math.sin(time * Math.PI) * -70 + 85;
 
     sun.style.left = x + "%";
     sun.style.top = y + "%";
@@ -32,27 +31,22 @@ function skyLogic() {
 
     let day = Math.sin(time * Math.PI);
 
-    // Color Transitions
     if (day > 0.6) { 
-        // NOON
         sky.style.background = "linear-gradient(to bottom, #4facfe 0%, #bde4ff 100%)";
         game.style.filter = "brightness(1) saturate(1)";
         moon.style.opacity = 0;
     } 
     else if (day > 0.2) { 
-        // SUNSET / SUNRISE (The "Cozy" Phase)
         sky.style.background = "linear-gradient(to bottom, #203a43, #2c5364, #ffaf7b)";
         game.style.filter = "brightness(0.85) sepia(0.3) saturate(1.3)";
         moon.style.opacity = 0.3;
     } 
     else if (day > 0.05) {
-        // DUSK (Pink/Purple)
         sky.style.background = "linear-gradient(to bottom, #480048, #C04848)";
         game.style.filter = "brightness(0.6) saturate(0.8) hue-rotate(-20deg)";
         moon.style.opacity = 0.6;
     }
     else { 
-        // NIGHT
         sky.style.background = "linear-gradient(to bottom, #000428, #004e92)";
         game.style.filter = "brightness(0.35) saturate(0.6) hue-rotate(20deg)";
         moon.style.opacity = 1;
@@ -62,11 +56,10 @@ function skyLogic() {
 }
 skyLogic();
 
-// Tree swaying
 function sway() {
     document.querySelectorAll('.horizon-tree').forEach((t, i) => {
         const movement = Math.sin(Date.now() / 4000 + i) * 1.5;
-        t.style.transform = `scale(1.1) rotate(${movement}deg)`;
+        t.style.transform = `scale(0.9) rotate(${movement}deg)`;
     });
     requestAnimationFrame(sway);
 }
