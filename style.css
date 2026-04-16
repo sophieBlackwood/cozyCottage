@@ -8,78 +8,68 @@
     --soft-shadow: #2a1f17;
 }
 
-body, html { margin: 0; padding: 0; background: #000; overflow: hidden; font-family: 'Georgia', serif; }
+body, html { margin: 0; padding: 0; background: #1a1a17; overflow: hidden; }
 
-/* 🎨 PIXEL ART SCALING */
-img, .pixel-cottage, .cat {
+/* 🎨 PIXEL PERFECT SCALING */
+img, .pixel-cottage, .pixel-tree, .white-cat {
     image-rendering: pixelated;
     image-rendering: crisp-edges;
 }
 
-#game { width: 100vw; height: 100vh; transition: filter 5s ease-in-out; }
+#game { width: 100vw; height: 100vh; transition: filter 4s ease; }
 
 /* --- OUTSIDE --- */
-#outside { background: var(--cream-light); }
+#outside { background: #fdf5e6; }
 .ground { 
-    position: absolute; bottom: 0; width: 100%; height: 40%; 
-    background: var(--moss-green); display: flex; justify-content: center; 
+    position: absolute; bottom: 0; width: 100%; height: 45%; 
+    background: var(--moss-green); border-top: 4px solid var(--dark-wood);
 }
 
-.cottage-container {
-    position: absolute; bottom: 50px; cursor: pointer;
-    transition: transform 0.3s ease;
+.cottage-wrap {
+    position: absolute; bottom: 60px; left: 50%;
+    transform: translateX(-50%) scale(4); /* UPSCALED 4X */
+    cursor: pointer; transition: transform 0.2s;
 }
-.cottage-container:hover { transform: scale(1.05); }
+.cottage-wrap:hover { transform: translateX(-50%) scale(4.2); }
 
-.pixel-cottage {
-    width: 300px; /* Scaled up from 100px while keeping pixels sharp */
-    height: auto;
+.pixel-tree {
+    position: absolute; bottom: 20px;
+    width: 80px; height: auto;
+    transform: scale(3.5);
 }
+.tree-left { left: 10%; }
+.tree-right { right: 10%; }
 
-/* Smoke effect */
-.smoke-stack {
-    position: absolute; top: 10px; right: 40px;
-    width: 12px; height: 12px; background: rgba(255,255,255,0.4);
-    border-radius: 50%; filter: blur(4px);
-    animation: smokeRise 4s infinite linear;
+.smoke-chimney {
+    position: absolute; top: 0; right: 20px;
+    width: 8px; height: 8px; background: rgba(255,255,255,0.4);
+    border-radius: 50%; filter: blur(3px);
+    animation: smokeRise 5s infinite;
 }
 
 /* --- INSIDE --- */
 #inside { background: var(--dark-wood); }
-.interior-wrap {
-    width: 80%; height: 80%; background: var(--cream-light);
-    border: 8px solid var(--warm-brown); position: relative;
-    box-shadow: inset 0 0 100px var(--soft-shadow);
-    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-}
-
-.fireplace-glow {
-    position: absolute; bottom: 0; left: 10%;
-    width: 200px; height: 150px;
-    background: radial-gradient(circle, var(--fire-glow) 0%, transparent 70%);
-    opacity: 0.6; animation: flicker 0.1s infinite alternate;
+.interior-bg {
+    width: 90%; height: 85%; background: var(--cream-light);
+    border: 10px solid var(--warm-brown); position: relative;
+    box-shadow: inset 0 0 80px var(--soft-shadow);
 }
 
 .candle.lit::after {
-    content: ''; position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+    content: ''; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
     width: 10px; height: 14px; background: var(--fire-glow);
     border-radius: 50% 50% 20% 50%; box-shadow: 0 0 15px var(--fire-glow);
+    animation: flicker 0.1s infinite alternate;
 }
 
-/* --- ANIMATIONS --- */
+/* --- EFFECTS --- */
 @keyframes smokeRise {
     0% { transform: translateY(0) scale(1); opacity: 0; }
-    20% { opacity: 0.5; }
-    100% { transform: translateY(-120px) scale(4); opacity: 0; }
+    20% { opacity: 0.6; }
+    100% { transform: translateY(-150px) scale(5); opacity: 0; }
 }
 
-@keyframes flicker {
-    from { opacity: 0.4; } to { opacity: 0.7; }
-}
+@keyframes flicker { from { opacity: 0.5; } to { opacity: 1; } }
 
-.scene { display: none; width: 100%; height: 100%; position: absolute; }
-.scene.active { display: flex; align-items: center; justify-content: center; animation: fadeIn 1.5s; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-/* Night Filter */
-.night { filter: brightness(0.4) sepia(0.3) hue-rotate(200deg); }
+.night { filter: brightness(0.3) saturate(0.8) hue-rotate(240deg); }
+.rain-drop { position: absolute; background: rgba(255,255,255,0.3); width: 2px; height: 15px; }
