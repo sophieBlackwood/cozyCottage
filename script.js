@@ -23,7 +23,7 @@ function skyLogic() {
     const moon = document.getElementById("moon");
     const skyContainer = document.getElementById("outside");
     
-    time += 0.00015; 
+    time += 0.0001; // Super slow movement
     if (time > 1) time = 0;
 
     let x = 5 + time * 90;
@@ -35,7 +35,7 @@ function skyLogic() {
     moon.style.top = (130 - y) + "%"; 
 
     let dayProgress = Math.sin(time * Math.PI);
-    if (dayProgress > 0.8) skyContainer.style.background = "linear-gradient(to bottom, #87CEEB, #f5e6c8)";
+    if (dayProgress > 0.7) skyContainer.style.background = "linear-gradient(to bottom, #87CEEB, #f5e6c8)";
     else if (dayProgress > 0.1) skyContainer.style.background = "linear-gradient(to bottom, #f7a35c, #d97a2b)";
     else skyContainer.style.background = "linear-gradient(to bottom, #0b1026, #05060c)";
 
@@ -46,10 +46,9 @@ skyLogic();
 
 /* GENTLE FOREST SWAY */
 function swayTrees() {
-    document.querySelectorAll('.pixel-tree').forEach((tree, i) => {
-        const angle = Math.sin(Date.now() / 2000 + i) * 1.5;
-        const baseScale = tree.classList.contains('bg-tree') ? 2.8 : 3.5;
-        tree.style.transform = `scale(${baseScale}) rotate(${angle}deg)`;
+    document.querySelectorAll('.horizon-tree').forEach((tree, i) => {
+        const angle = Math.sin(Date.now() / 3000 + i) * 1.2;
+        tree.style.transform = `scale(1.8) rotate(${angle}deg)`;
     });
     requestAnimationFrame(swayTrees);
 }
