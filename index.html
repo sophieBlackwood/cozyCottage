@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cozy Pixel Cottage</title>
+    <title>Cozy Ren Faire Cottage</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,40 +12,41 @@
 <div id="game">
     <section id="outside" class="scene active">
         <div class="sky"></div>
-        <div class="ground"></div>
-        <div class="path"></div>
-        <div class="cottage" onclick="enterHouse()">
-            <div class="roof"></div>
-            <div class="smoke"></div>
-            <div class="door-ui">🚪</div>
+        <div class="weather-layer"></div>
+        <div class="ground">
+            <div class="pebble-path"></div>
+            <div class="cottage-container" onclick="enterHouse()">
+                <img src="cottage.png" alt="Cottage" class="pixel-cottage">
+                <div class="smoke-stack"></div>
+            </div>
         </div>
-        <p class="hint">Click the door to enter</p>
     </section>
 
     <section id="inside" class="scene">
-        <div class="room">
-            <div class="fireplace"></div>
-            <div class="window"></div>
+        <div class="interior-wrap">
+            <div class="window-light"></div>
+            <div class="fireplace-glow"></div>
             
-            <div class="table">
-                <div id="candle" class="candle" onclick="toggleCandle()"></div>
-                <div class="bookshelf">
-                    <span class="book" onclick="openBook('ballet')">🩰</span>
-                    <span class="book" onclick="openBook('landscape')">🌄</span>
+            <div class="furniture">
+                <div class="chair left">🪑</div>
+                <div class="table">
+                    <div id="candle" class="candle" onclick="toggleCandle()"></div>
+                    <div class="books">
+                        <span class="book-item" onclick="openBook('ballet')">🩰</span>
+                        <span class="book-item" onclick="openBook('landscape')">🌄</span>
+                    </div>
                 </div>
+                <div class="chair right">🪑</div>
             </div>
 
             <div class="cat" id="cat">🐈</div>
-            <div class="chair left">🪑</div>
-            <div class="chair right">🪑</div>
-            <div class="rug"></div>
         </div>
     </section>
 
     <section id="bookWorld" class="scene">
-        <div id="bookOverlay">
+        <div class="page-turning-wrap">
             <div id="bookContent"></div>
-            <button class="close-btn" onclick="closeBook()">Close Book</button>
+            <button class="close-btn" onclick="closeBook()">Return to Cottage</button>
         </div>
     </section>
 </div>
