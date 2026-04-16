@@ -9,56 +9,59 @@ function enterHouse() {
     }, 1000);
 }
 
-// --- WORLD LOGIC ---
-let isNight = false;
+// --- DYNAMIC WEATHER & TIME ---
+let weather = 'sunny'; 
 setInterval(() => {
-    isNight = !isNight;
-    const game = document.getElementById('game');
-    if(isNight) game.classList.add('night');
-    else game.classList.remove('night');
-}, 60000); // Transitions every minute
+    // Cycle Time: Day -> Night
+    document.getElementById('game').classList.toggle('night');
+    
+    // Cycle Weather: Sunny -> Rainy -> Windy
+    const modes = ['sunny', 'rainy', 'windy'];
+    weather = modes[Math.floor(Math.random() * modes.length)];
+    if(weather === 'rainy') startRain();
+}, 20000);
 
+function startRain() {
+    const rainBox = document.getElementById('rainBox');
+    for(let i=0; i<30; i++) {
+        let drop = document.createElement('div');
+        drop.className = 'rain-drop';
+        drop.style.left = Math.random() * 100 + "vw";
+        drop.style.top = Math.random() * 100 + "vh";
+        rainBox.appendChild(drop);
+        
+        let fall = setInterval(() => {
+            drop.style.top = (parseInt(drop.style.top) + 8) + "px";
+            if(parseInt(drop.style.top) > window.innerHeight) drop.style.top = "-20px";
+        }, 20);
+        
+        setTimeout(() => { clearInterval(fall); drop.remove(); }, 10000);
+    }
+}
+
+// --- CANDLE & CAT ---
 function toggleCandle() {
     document.getElementById('candle').classList.toggle('lit');
 }
 
-// --- THE BOOK WORLDS ---
+document.getElementById('cat').onclick = () => {
+    alert("The white cat meows. Her blue eyes track a butterfly.");
+};
+
+// --- BOOKS & GAMES ---
 function openBook(type) {
     const content = document.getElementById('bookContent');
     document.getElementById('bookWorld').classList.add('active');
-
+    
     if(type === 'ballet') {
-        content.innerHTML = `
-            <h2 style="color:#4a2e1a">A Story of Dance</h2>
-            <div class="mini-game" id="danceArea">
-                <span id="dancer" style="font-size:50px; cursor:pointer;">💃</span>
-            </div>
-            <p>Score: <span id="score">0</span></p>
-        `;
-        initDanceGame();
+        content.innerHTML = `<h3>The Ballerina</h3><div id='dancer' style='font-size:60px; cursor:pointer;'>💃</div><p>Click her to dance!</p>`;
+        const d = document.getElementById('dancer');
+        d.onclick = () => d.style.transform = `rotate(${Math.random()*360}deg) scale(1.2)`;
     } else {
-        content.innerHTML = `<h2>Landscape</h2><p>The pixelated hills roll on forever...</p>`;
+        content.innerHTML = `<h3>Landscapes</h3><p>You see a painted world of ${weather} hills.</p>`;
     }
-}
-
-function initDanceGame() {
-    let score = 0;
-    const dancer = document.getElementById('dancer');
-    dancer.onclick = () => {
-        score++;
-        document.getElementById('score').innerText = score;
-        dancer.style.transform = `translate(${Math.random()*40-20}px, ${Math.random()*40-20}px)`;
-    };
 }
 
 function closeBook() {
     document.getElementById('bookWorld').classList.remove('active');
 }
-
-// --- THE CAT ---
-const cat = document.getElementById('cat');
-cat.addEventListener('click', () => {
-    cat.style.transform = "translateY(-20px)";
-    setTimeout(() => cat.style.transform = "translateY(0)", 200);
-    console.log("The white cat blinks its blue eyes at you.");
-});
