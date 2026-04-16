@@ -1,152 +1,102 @@
-const fade = document.getElementById('fade');
+const fade=document.getElementById("fade");
 
-// SCENE SWITCH
-function setScene(id) {
-    fade.style.opacity = 1;
-    setTimeout(() => {
-        document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        fade.style.opacity = 0;
-    }, 600);
+/* SCENE SWITCH */
+function setScene(id){
+fade.style.opacity=1;
+
+setTimeout(()=>{
+document.querySelectorAll(".scene").forEach(s=>s.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+fade.style.opacity=0;
+document.getElementById("game").classList.remove("entering");
+},700);
 }
 
-// ENTER HOUSE
-document.querySelector('.cottage-wrap')
-    .addEventListener('click', () => setScene('inside'));
+/* 🚪 CINEMATIC COTTAGE ENTRY */
+document.querySelector(".cottage-wrap").onclick=()=>{
 
-// TIME
-setInterval(() => {
-    document.getElementById('game').classList.toggle('night');
-}, 25000);
+// camera push forward
+document.getElementById("game").classList.add("entering");
 
-// WEATHER
-let rainInterval;
+// fog intensifies briefly (illusion of passing through air)
+document.body.style.filter="blur(1px)";
 
-function startRain() {
-    const box = document.getElementById('rainBox');
-    rainInterval = setInterval(() => {
-        let drop = document.createElement('div');
-        drop.className = 'rain-drop';
-        drop.style.left = Math.random() * window.innerWidth + "px";
-        drop.style.top = "-20px";
-        box.appendChild(drop);
+setTimeout(()=>{
+setScene("inside");
+document.body.style.filter="none";
+},800);
+};
 
-        let fall = setInterval(() => {
-            drop.style.top = (parseInt(drop.style.top) + 10) + "px";
-            if (parseInt(drop.style.top) > window.innerHeight) {
-                drop.remove();
-                clearInterval(fall);
-            }
-        }, 16);
-    }, 120);
+/* SKY SYSTEM */
+let time=0;
+
+function sky(){
+const game=document.getElementById("game");
+time+=0.0008;if(time>1)time=0;
+
+const sun=document.getElementById("sun");
+const moon=document.getElementById("moon");
+const glow=document.querySelector(".sky-glow");
+
+let x=10+time*80;
+let y=Math.sin(time*Math.PI)*-40+60;
+
+sun.style.left=x+"%";
+sun.style.top=y+"%";
+
+moon.style.left=(100-x)+"%";
+moon.style.top=(100-y)+"%";
+
+let night=Math.max(0,Math.sin(time*Math.PI*2));
+
+game.style.filter=`brightness(${1-night*.6}) saturate(${1-night*.3})`;
+moon.style.opacity=night;
+glow.style.opacity=night;
+
+requestAnimationFrame(sky);
+}
+sky();
+
+/* LEAVES */
+function leaf(){
+let c=document.getElementById("leaf-container");
+let l=document.createElement("div");
+l.className="leaf";
+l.style.left=Math.random()*100+"vw";
+l.style.animationDuration=5+Math.random()*5+"s";
+c.appendChild(l);
+setTimeout(()=>l.remove(),10000);
+}
+setInterval(leaf,1200);
+
+/* WEATHER */
+let rainInt;
+
+function rain(){
+let b=document.getElementById("rainBox");
+rainInt=setInterval(()=>{
+let d=document.createElement("div");
+d.className="rain-drop";
+d.style.left=Math.random()*window.innerWidth+"px";
+d.style.top="-20px";
+b.appendChild(d);
+
+let f=setInterval(()=>{
+d.style.top=(parseInt(d.style.top)+10)+"px";
+if(parseInt(d.style.top)>window.innerHeight){d.remove();clearInterval(f);}
+},16);
+},120);
 }
 
-function stopRain() {
-    clearInterval(rainInterval);
-    document.getElementById('rainBox').innerHTML = "";
+function stopRain(){
+clearInterval(rainInt);
+document.getElementById("rainBox").innerHTML="";
 }
 
-setInterval(() => {
-    const modes = ['sunny', 'rainy', 'windy'];
-    const mode = modes[Math.floor(Math.random() * modes.length)];
-
-    stopRain();
-    document.getElementById('game').classList.remove('windy');
-
-    if (mode === 'rainy') startRain();
-    if (mode === 'windy') document.getElementById('game').classList.add('windy');
-
-}, 20000);
-
-// CANDLE
-document.getElementById('candle').onclick = () => {
-    document.getElementById('candle').classList.toggle('lit');
-    document.getElementById('game').classList.toggle('candle-glow');
-};
-
-// CAT
-document.getElementById('cat').onclick = () => {
-    const msg = document.createElement('div');
-    msg.innerText = "The cat watches quietly.";
-    msg.style.position = "fixed";
-    msg.style.bottom = "20px";
-    msg.style.left = "50%";
-    msg.style.transform = "translateX(-50%)";
-    msg.style.background = "white";
-    msg.style.padding = "10px";
-    document.body.appendChild(msg);
-    setTimeout(() => msg.remove(), 2000);
-};
-
-// BOOK SYSTEM
-const books = {
-    ballet: {
-        title: "The Ballerina",
-        content: `
-            <div id="lane">
-                <div class="hit-zone"></div>
-            </div>
-            <div id="dancer" class="dancer">💃</div>
-            <p id="feedback">Press arrow keys</p>
-        `,
-        init: () => {
-
-            const lane = document.getElementById('lane');
-            const dancer = document.getElementById('dancer');
-
-            const keys = ["ArrowLeft","ArrowUp","ArrowDown","ArrowRight"];
-            let notes = [];
-
-            function spawn() {
-                let note = document.createElement('div');
-                let key = keys[Math.floor(Math.random()*keys.length)];
-                note.className = 'note';
-                note.dataset.key = key;
-                note.innerText = "⬇️";
-                note.style.left = Math.random()*80 + "%";
-                note.style.top = "-20px";
-                lane.appendChild(note);
-                notes.push(note);
-            }
-
-            function update() {
-                notes.forEach((n,i)=>{
-                    let y = parseInt(n.style.top);
-                    n.style.top = (y+5)+"px";
-                    if(y>300){ n.remove(); notes.splice(i,1); }
-                });
-            }
-
-            window.onkeydown = (e)=>{
-                notes.forEach((n,i)=>{
-                    let y = parseInt(n.style.top);
-                    if(n.dataset.key===e.key && y>220 && y<300){
-                        n.remove(); notes.splice(i,1);
-                        dancer.style.transform=`rotate(${Math.random()*360}deg)`;
-                    }
-                });
-            };
-
-            setInterval(spawn,1200);
-            setInterval(update,30);
-        }
-    },
-
-    landscape: {
-        title: "Landscapes",
-        content: `<p>A peaceful painted world.</p>`,
-        init: () => {}
-    }
-};
-
-document.querySelectorAll('.clickable-book').forEach(b=>{
-    b.onclick = ()=>{
-        let book = books[b.dataset.book];
-        setScene('bookWorld');
-        let content = document.getElementById('bookContent');
-        content.innerHTML = `<h3>${book.title}</h3>${book.content}`;
-        setTimeout(book.init,50);
-    };
-});
-
-document.querySelector('.close-btn').onclick = () => setScene('inside');
+setInterval(()=>{
+let m=["sunny","rainy","windy"][Math.random()*3|0];
+stopRain();
+document.getElementById("game").classList.remove("windy");
+if(m=="rainy")rain();
+if(m=="windy")document.getElementById("game").classList.add("windy");
+},20000);
