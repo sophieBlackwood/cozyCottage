@@ -1,79 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Cozy Ren Faire Cottage</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cozy Ren Faire Cottage</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <div id="fade"></div>
 
 <div id="game">
+    <section id="outside" class="scene active">
+        <div id="sun"></div>
+        <div id="moon"></div>
+        <div class="sky-glow"></div>
 
-<!-- OUTSIDE -->
-<section id="outside" class="scene active">
+        <div class="fog-layer fog-1"></div>
+        <div class="horizon-forest"></div>
+        <div class="rain-container" id="rainBox"></div>
 
-    <div id="sun"></div>
-    <div id="moon"></div>
-    <div class="sky-glow"></div>
+        <div class="ground">
+            <img src="tree1.png" class="pixel-tree tree-left">
+            <img src="tree1.png" class="pixel-tree tree-right">
 
-    <div class="fog-layer fog-1"></div>
-    <div class="fog-layer fog-2"></div>
-
-    <div id="leaf-container"></div>
-    <div class="rain-container" id="rainBox"></div>
-
-    <div class="horizon-forest"></div>
-
-    <div class="ground">
-
-        <img src="tree1.png" class="pixel-tree tree-left">
-        <img src="tree1.png" class="pixel-tree tree-right">
-
-        <!-- COTTAGE (CLICK TARGET) -->
-        <div class="cottage-wrap">
-            <img src="cottage.png" class="pixel-cottage">
-            <div class="smoke-chimney"></div>
-        </div>
-
-    </div>
-</section>
-
-<!-- INSIDE -->
-<section id="inside" class="scene">
-
-    <div class="interior-bg">
-
-        <div class="furniture-set">
-            <div class="chair">🪑</div>
-
-            <div class="table">
-                <div id="candle" class="candle"></div>
-
-                <div class="book-stack">
-                    <span class="clickable-book" data-book="ballet">🩰</span>
-                    <span class="clickable-book" data-book="landscape">🌄</span>
-                </div>
+            <div class="cottage-wrap">
+                <img src="cottage.png" class="pixel-cottage">
+                <div class="smoke-chimney"></div>
             </div>
-
-            <div class="chair">🪑</div>
+            <div class="pebble-path"></div>
         </div>
+    </section>
 
-        <div class="white-cat" id="cat">🐈</div>
+    <section id="inside" class="scene">
+        <div class="interior-bg">
+            <div class="window-sunlight"></div>
+            <div class="furniture-set">
+                <div class="chair">🪑</div>
+                <div class="table">
+                    <div id="candle" class="candle"></div>
+                    <div class="book-stack">
+                        <span class="clickable-book" data-book="ballet">🩰</span>
+                        <span class="clickable-book" data-book="landscape">🌄</span>
+                    </div>
+                </div>
+                <div class="chair">🪑</div>
+            </div>
+            <div class="white-cat" id="cat">🐈</div>
+        </div>
+    </section>
 
-    </div>
-</section>
-
-<!-- BOOK WORLD -->
-<section id="bookWorld" class="scene">
-    <div class="book-ui">
-        <div id="bookContent"></div>
-        <button class="close-btn">Close Book</button>
-    </div>
-</section>
-
+    <section id="bookWorld" class="scene">
+        <div class="book-ui">
+            <div id="bookContent"></div>
+            <button class="close-btn">Close Book</button>
+        </div>
+    </section>
 </div>
 
 <script src="script.js"></script>
