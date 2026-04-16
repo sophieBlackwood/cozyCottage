@@ -30,6 +30,10 @@ body, html {
 .scene.active { display: flex; opacity: 1; flex-direction: column; align-items: center; justify-content: center; }
 
 /* --- OUTSIDE --- */
+img, .cottage, .room {
+  image-rendering: pixelated; /* This keeps the edges sharp when scaling up */
+  image-rendering: crisp-edges;
+}
 #outside { background: var(--cream-light); }
 .ground { position: absolute; bottom: 0; width: 100%; height: 35%; background: var(--moss-green); }
 .path { 
