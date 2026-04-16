@@ -1,93 +1,79 @@
-function fadeTransition(callback) {
-  const fade = document.getElementById("fade");
-  fade.style.opacity = 1;
-
-  setTimeout(() => {
-    callback();
-    fade.style.opacity = 0;
-  }, 800);
-}
-
-function switchScene(id) {
-  document.querySelectorAll(".scene").forEach(s => s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-/* 🚪 Enter */
+// --- SCENE NAVIGATION ---
 function enterHouse() {
-  fadeTransition(() => switchScene("inside"));
+    const fade = document.getElementById('fade');
+    fade.style.opacity = 1;
+    setTimeout(() => {
+        document.getElementById('outside').classList.remove('active');
+        document.getElementById('inside').classList.add('active');
+        fade.style.opacity = 0;
+    }, 800);
 }
 
-/* 📖 Books */
-function openBook(type) {
-  const content = document.getElementById("bookContent");
+// --- CANDLE & LIGHTING ---
+function toggleCandle() {
+    document.getElementById('candle').classList.toggle('lit');
+}
 
-  if (type === "ballet") {
-    content.innerHTML = "Soft music plays... you move like drifting petals...";
-  }
+// --- WEATHER & TIME SYSTEM ---
+let dayCycle = 0; 
+setInterval(() => {
+    dayCycle++;
+    if (dayCycle % 2 === 0) {
+        document.body.classList.add('night');
+    } else {
+        document.body.classList.remove('night');
+    }
+}, 30000); // Switches every 30 seconds
 
-  if (type === "landscape") {
-    content.innerHTML = "Golden hills stretch endlessly under a painted sky...";
-  }
+function createRain() {
+    if (!document.body.classList.contains('rainy')) return;
+    const rainDrop = document.createElement('div');
+    rainDrop.className = 'rain';
+    rainDrop.style.left = Math.random() * 100 + "vw";
+    rainDrop.style.top = "-20px";
+    document.body.appendChild(rainDrop);
+    
+    let fall = setInterval(() => {
+        rainDrop.style.top = (parseInt(rainDrop.style.top) + 10) + "px";
+        if (parseInt(rainDrop.style.top) > window.innerHeight) {
+            clearInterval(fall);
+            rainDrop.remove();
+        }
+    }, 20);
+}
+setInterval(createRain, 100);
 
-  if (type === "forest") {
-    content.innerHTML = `
-      Catch the fireflies ✨<br><br>
-      <div id="gameArea"></div>
-    `;
-    startFireflyGame();
-  }
-
-  fadeTransition(() => switchScene("bookWorld"));
+// --- BOOK WORLDS & GAME ---
+function openBook(world) {
+    const overlay = document.getElementById('bookWorld');
+    const content = document.getElementById('bookContent');
+    overlay.classList.add('active');
+    
+    if (world === 'ballet') {
+        content.innerHTML = `
+            <h2>The Ballerina's Dream</h2>
+            <p>Help her find her rhythm!</p>
+            <div id="miniGame" style="font-size: 50px; cursor: pointer;">💃</div>
+            <p>Clicks: <span id="score">0</span></p>
+        `;
+        let score = 0;
+        document.getElementById('miniGame').onclick = function() {
+            score++;
+            document.getElementById('score').innerText = score;
+            this.style.transform = `scale(${1 + score*0.1}) rotate(${score*10}deg)`;
+        };
+    } else {
+        content.innerHTML = `<h2>Landscape</h2><p>A quiet pixel field stretches forever...</p>`;
+    }
 }
 
 function closeBook() {
-  fadeTransition(() => switchScene("inside"));
+    document.getElementById('bookWorld').classList.remove('active');
 }
 
-/* 🕯️ Candle */
-function toggleCandle() {
-  document.getElementById("candle").classList.toggle("lit");
-}
-
-/* 🐈 Cat wandering */
-setInterval(() => {
-  const cat = document.getElementById("cat");
-  const x = Math.random() * 200;
-  cat.style.transform = `translateX(-${x}px)`;
-}, 4000);
-
-/* 🌙 Day/Night */
-setInterval(() => {
-  document.body.classList.toggle("night");
-}, 25000);
-
-/* 🌧️ Rain system */
-setInterval(() => {
-  for (let i = 0; i < 20; i++) {
-    const drop = document.createElement("div");
-    drop.className = "rain";
-    drop.style.left = Math.random() * window.innerWidth + "px";
-    document.body.appendChild(drop);
-
-    setTimeout(() => drop.remove(), 1000);
-  }
-}, 300);
-
-/* ✨ Firefly mini game */
-function startFireflyGame() {
-  const area = document.getElementById("gameArea");
-
-  for (let i = 0; i < 5; i++) {
-    const f = document.createElement("div");
-    f.innerHTML = "✨";
-    f.style.position = "absolute";
-    f.style.left = Math.random() * 300 + "px";
-    f.style.top = Math.random() * 200 + "px";
-    f.style.cursor = "pointer";
-
-    f.onclick = () => f.remove();
-
-    area.appendChild(f);
-  }
-}
+// --- THE CAT ---
+document.getElementById('cat').onclick = function() {
+    this.innerText = "🐾";
+    setTimeout(() => this.innerText = "🐈", 1000);
+    console.log("The white cat with blue eyes purrs.");
+};
