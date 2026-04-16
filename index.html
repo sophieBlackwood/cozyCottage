@@ -10,37 +10,38 @@
 <div id="fade"></div>
 
 <div id="game">
+
+    <!-- OUTSIDE -->
     <section id="outside" class="scene active">
-        <div class="sky"></div>
         <div class="rain-container" id="rainBox"></div>
-        
+
         <div class="ground">
             <img src="tree1.png" class="pixel-tree tree-left">
             <img src="tree1.png" class="pixel-tree tree-right">
-            
-            <div class="pebble-path"></div>
-            
-            <div class="cottage-wrap" onclick="enterHouse()">
-                <img src="cottage.png" alt="Cottage" class="pixel-cottage">
+
+            <div class="cottage-wrap">
+                <img src="cottage.png" class="pixel-cottage">
                 <div class="smoke-chimney"></div>
             </div>
         </div>
     </section>
 
+    <!-- INSIDE -->
     <section id="inside" class="scene">
         <div class="interior-bg">
-            <div class="window-sunlight"></div>
-            <div class="fireplace-flicker"></div>
-            
+
             <div class="furniture-set">
                 <div class="chair">🪑</div>
+
                 <div class="table">
-                    <div id="candle" class="candle" onclick="toggleCandle()"></div>
+                    <div id="candle" class="candle"></div>
+
                     <div class="book-stack">
-                        <span class="clickable-book" onclick="openBook('ballet')">🩰</span>
-                        <span class="clickable-book" onclick="openBook('landscape')">🌄</span>
+                        <span class="clickable-book" data-book="ballet">🩰</span>
+                        <span class="clickable-book" data-book="landscape">🌄</span>
                     </div>
                 </div>
+
                 <div class="chair">🪑</div>
             </div>
 
@@ -48,12 +49,14 @@
         </div>
     </section>
 
+    <!-- BOOK -->
     <section id="bookWorld" class="scene">
         <div class="book-ui">
             <div id="bookContent"></div>
-            <button class="close-btn" onclick="closeBook()">Close Book</button>
+            <button class="close-btn">Close Book</button>
         </div>
     </section>
+
 </div>
 
 <script src="script.js"></script>
