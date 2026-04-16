@@ -1,57 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Cozy Cottage</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cozy Pixel Cottage</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div id="fade"></div>
 
 <div id="game">
+    <section id="outside" class="scene active">
+        <div class="sky"></div>
+        <div class="ground"></div>
+        <div class="path"></div>
+        <div class="cottage" onclick="enterHouse()">
+            <div class="roof"></div>
+            <div class="smoke"></div>
+            <div class="door-ui">🚪</div>
+        </div>
+        <p class="hint">Click the door to enter</p>
+    </section>
 
-  <!-- 🌲 OUTSIDE -->
-  <section id="outside" class="scene active">
-    <div class="sky"></div>
-    <div class="ground"></div>
+    <section id="inside" class="scene">
+        <div class="room">
+            <div class="fireplace"></div>
+            <div class="window"></div>
+            
+            <div class="table">
+                <div id="candle" class="candle" onclick="toggleCandle()"></div>
+                <div class="bookshelf">
+                    <span class="book" onclick="openBook('ballet')">🩰</span>
+                    <span class="book" onclick="openBook('landscape')">🌄</span>
+                </div>
+            </div>
 
-    <div class="cottage" onclick="enterHouse()">
-      <div class="roof"></div>
-      <div class="door">🚪</div>
-      <div class="window-glow"></div>
-      <div class="smoke"></div>
-    </div>
+            <div class="cat" id="cat">🐈</div>
+            <div class="chair left">🪑</div>
+            <div class="chair right">🪑</div>
+            <div class="rug"></div>
+        </div>
+    </section>
 
-    <p class="hint">click the door</p>
-  </section>
-
-  <!-- 🏡 INSIDE -->
-  <section id="inside" class="scene">
-    <div class="room">
-
-      <div class="fireplace"></div>
-
-      <div class="table">
-        <div id="candle" class="candle" onclick="toggleCandle()"></div>
-
-        <div class="book" onclick="openBook('ballet')">🩰</div>
-        <div class="book" onclick="openBook('landscape')">🌄</div>
-        <div class="book" onclick="openBook('forest')">🌲</div>
-      </div>
-
-      <div class="cat" id="cat">🐈</div>
-
-    </div>
-  </section>
-
-  <!-- 📖 BOOK WORLD -->
-  <section id="bookWorld" class="scene">
-    <div id="bookOverlay"></div>
-    <div id="bookContent"></div>
-    <button onclick="closeBook()">Close</button>
-  </section>
-
+    <section id="bookWorld" class="scene">
+        <div id="bookOverlay">
+            <div id="bookContent"></div>
+            <button class="close-btn" onclick="closeBook()">Close Book</button>
+        </div>
+    </section>
 </div>
 
 <script src="script.js"></script>
