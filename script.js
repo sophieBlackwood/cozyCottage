@@ -1,67 +1,152 @@
-// --- SCENE NAVIGATION ---
-function enterHouse() {
-    const fade = document.getElementById('fade');
+const fade = document.getElementById('fade');
+
+// SCENE SWITCH
+function setScene(id) {
     fade.style.opacity = 1;
     setTimeout(() => {
-        document.getElementById('outside').classList.remove('active');
-        document.getElementById('inside').classList.add('active');
+        document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
         fade.style.opacity = 0;
-    }, 1000);
+    }, 600);
 }
 
-// --- DYNAMIC WEATHER & TIME ---
-let weather = 'sunny'; 
+// ENTER HOUSE
+document.querySelector('.cottage-wrap')
+    .addEventListener('click', () => setScene('inside'));
+
+// TIME
 setInterval(() => {
-    // Cycle Time: Day -> Night
     document.getElementById('game').classList.toggle('night');
-    
-    // Cycle Weather: Sunny -> Rainy -> Windy
-    const modes = ['sunny', 'rainy', 'windy'];
-    weather = modes[Math.floor(Math.random() * modes.length)];
-    if(weather === 'rainy') startRain();
-}, 20000);
+}, 25000);
+
+// WEATHER
+let rainInterval;
 
 function startRain() {
-    const rainBox = document.getElementById('rainBox');
-    for(let i=0; i<30; i++) {
+    const box = document.getElementById('rainBox');
+    rainInterval = setInterval(() => {
         let drop = document.createElement('div');
         drop.className = 'rain-drop';
-        drop.style.left = Math.random() * 100 + "vw";
-        drop.style.top = Math.random() * 100 + "vh";
-        rainBox.appendChild(drop);
-        
+        drop.style.left = Math.random() * window.innerWidth + "px";
+        drop.style.top = "-20px";
+        box.appendChild(drop);
+
         let fall = setInterval(() => {
-            drop.style.top = (parseInt(drop.style.top) + 8) + "px";
-            if(parseInt(drop.style.top) > window.innerHeight) drop.style.top = "-20px";
-        }, 20);
-        
-        setTimeout(() => { clearInterval(fall); drop.remove(); }, 10000);
-    }
+            drop.style.top = (parseInt(drop.style.top) + 10) + "px";
+            if (parseInt(drop.style.top) > window.innerHeight) {
+                drop.remove();
+                clearInterval(fall);
+            }
+        }, 16);
+    }, 120);
 }
 
-// --- CANDLE & CAT ---
-function toggleCandle() {
+function stopRain() {
+    clearInterval(rainInterval);
+    document.getElementById('rainBox').innerHTML = "";
+}
+
+setInterval(() => {
+    const modes = ['sunny', 'rainy', 'windy'];
+    const mode = modes[Math.floor(Math.random() * modes.length)];
+
+    stopRain();
+    document.getElementById('game').classList.remove('windy');
+
+    if (mode === 'rainy') startRain();
+    if (mode === 'windy') document.getElementById('game').classList.add('windy');
+
+}, 20000);
+
+// CANDLE
+document.getElementById('candle').onclick = () => {
     document.getElementById('candle').classList.toggle('lit');
-}
-
-document.getElementById('cat').onclick = () => {
-    alert("The white cat meows. Her blue eyes track a butterfly.");
+    document.getElementById('game').classList.toggle('candle-glow');
 };
 
-// --- BOOKS & GAMES ---
-function openBook(type) {
-    const content = document.getElementById('bookContent');
-    document.getElementById('bookWorld').classList.add('active');
-    
-    if(type === 'ballet') {
-        content.innerHTML = `<h3>The Ballerina</h3><div id='dancer' style='font-size:60px; cursor:pointer;'>💃</div><p>Click her to dance!</p>`;
-        const d = document.getElementById('dancer');
-        d.onclick = () => d.style.transform = `rotate(${Math.random()*360}deg) scale(1.2)`;
-    } else {
-        content.innerHTML = `<h3>Landscapes</h3><p>You see a painted world of ${weather} hills.</p>`;
-    }
-}
+// CAT
+document.getElementById('cat').onclick = () => {
+    const msg = document.createElement('div');
+    msg.innerText = "The cat watches quietly.";
+    msg.style.position = "fixed";
+    msg.style.bottom = "20px";
+    msg.style.left = "50%";
+    msg.style.transform = "translateX(-50%)";
+    msg.style.background = "white";
+    msg.style.padding = "10px";
+    document.body.appendChild(msg);
+    setTimeout(() => msg.remove(), 2000);
+};
 
-function closeBook() {
-    document.getElementById('bookWorld').classList.remove('active');
-}
+// BOOK SYSTEM
+const books = {
+    ballet: {
+        title: "The Ballerina",
+        content: `
+            <div id="lane">
+                <div class="hit-zone"></div>
+            </div>
+            <div id="dancer" class="dancer">💃</div>
+            <p id="feedback">Press arrow keys</p>
+        `,
+        init: () => {
+
+            const lane = document.getElementById('lane');
+            const dancer = document.getElementById('dancer');
+
+            const keys = ["ArrowLeft","ArrowUp","ArrowDown","ArrowRight"];
+            let notes = [];
+
+            function spawn() {
+                let note = document.createElement('div');
+                let key = keys[Math.floor(Math.random()*keys.length)];
+                note.className = 'note';
+                note.dataset.key = key;
+                note.innerText = "⬇️";
+                note.style.left = Math.random()*80 + "%";
+                note.style.top = "-20px";
+                lane.appendChild(note);
+                notes.push(note);
+            }
+
+            function update() {
+                notes.forEach((n,i)=>{
+                    let y = parseInt(n.style.top);
+                    n.style.top = (y+5)+"px";
+                    if(y>300){ n.remove(); notes.splice(i,1); }
+                });
+            }
+
+            window.onkeydown = (e)=>{
+                notes.forEach((n,i)=>{
+                    let y = parseInt(n.style.top);
+                    if(n.dataset.key===e.key && y>220 && y<300){
+                        n.remove(); notes.splice(i,1);
+                        dancer.style.transform=`rotate(${Math.random()*360}deg)`;
+                    }
+                });
+            };
+
+            setInterval(spawn,1200);
+            setInterval(update,30);
+        }
+    },
+
+    landscape: {
+        title: "Landscapes",
+        content: `<p>A peaceful painted world.</p>`,
+        init: () => {}
+    }
+};
+
+document.querySelectorAll('.clickable-book').forEach(b=>{
+    b.onclick = ()=>{
+        let book = books[b.dataset.book];
+        setScene('bookWorld');
+        let content = document.getElementById('bookContent');
+        content.innerHTML = `<h3>${book.title}</h3>${book.content}`;
+        setTimeout(book.init,50);
+    };
+});
+
+document.querySelector('.close-btn').onclick = () => setScene('inside');
