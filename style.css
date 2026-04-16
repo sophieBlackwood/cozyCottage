@@ -1,12 +1,12 @@
 /* Color Palette */
 :root {
-    --warm-brown: #7a4f2a;
-    --dark-wood: #4a2e1a;
-    --cream-light: #f5e6c8;
+    --warm-brown: #956427;
+    --dark-wood: #6C4311;
+    --cream-light: #e4de77;
     --fire-glow: #ffb347;
-    --moss-green: #5a7d4d;
+    --moss-green: #64601d;
     --autumn-orange: #d97a2b;
-    --soft-shadow: #2a1f17;
+    --soft-shadow: #444330;
 }
 
 body, html { 
