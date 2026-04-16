@@ -6,65 +6,49 @@ function enterHouse() {
         document.getElementById('outside').classList.remove('active');
         document.getElementById('inside').classList.add('active');
         fade.style.opacity = 0;
-    }, 800);
+    }, 1000);
 }
 
-// --- CANDLE & LIGHTING ---
+// --- WORLD LOGIC ---
+let isNight = false;
+setInterval(() => {
+    isNight = !isNight;
+    const game = document.getElementById('game');
+    if(isNight) game.classList.add('night');
+    else game.classList.remove('night');
+}, 60000); // Transitions every minute
+
 function toggleCandle() {
     document.getElementById('candle').classList.toggle('lit');
 }
 
-// --- WEATHER & TIME SYSTEM ---
-let dayCycle = 0; 
-setInterval(() => {
-    dayCycle++;
-    if (dayCycle % 2 === 0) {
-        document.body.classList.add('night');
-    } else {
-        document.body.classList.remove('night');
-    }
-}, 30000); // Switches every 30 seconds
-
-function createRain() {
-    if (!document.body.classList.contains('rainy')) return;
-    const rainDrop = document.createElement('div');
-    rainDrop.className = 'rain';
-    rainDrop.style.left = Math.random() * 100 + "vw";
-    rainDrop.style.top = "-20px";
-    document.body.appendChild(rainDrop);
-    
-    let fall = setInterval(() => {
-        rainDrop.style.top = (parseInt(rainDrop.style.top) + 10) + "px";
-        if (parseInt(rainDrop.style.top) > window.innerHeight) {
-            clearInterval(fall);
-            rainDrop.remove();
-        }
-    }, 20);
-}
-setInterval(createRain, 100);
-
-// --- BOOK WORLDS & GAME ---
-function openBook(world) {
-    const overlay = document.getElementById('bookWorld');
+// --- THE BOOK WORLDS ---
+function openBook(type) {
     const content = document.getElementById('bookContent');
-    overlay.classList.add('active');
-    
-    if (world === 'ballet') {
+    document.getElementById('bookWorld').classList.add('active');
+
+    if(type === 'ballet') {
         content.innerHTML = `
-            <h2>The Ballerina's Dream</h2>
-            <p>Help her find her rhythm!</p>
-            <div id="miniGame" style="font-size: 50px; cursor: pointer;">💃</div>
-            <p>Clicks: <span id="score">0</span></p>
+            <h2 style="color:#4a2e1a">A Story of Dance</h2>
+            <div class="mini-game" id="danceArea">
+                <span id="dancer" style="font-size:50px; cursor:pointer;">💃</span>
+            </div>
+            <p>Score: <span id="score">0</span></p>
         `;
-        let score = 0;
-        document.getElementById('miniGame').onclick = function() {
-            score++;
-            document.getElementById('score').innerText = score;
-            this.style.transform = `scale(${1 + score*0.1}) rotate(${score*10}deg)`;
-        };
+        initDanceGame();
     } else {
-        content.innerHTML = `<h2>Landscape</h2><p>A quiet pixel field stretches forever...</p>`;
+        content.innerHTML = `<h2>Landscape</h2><p>The pixelated hills roll on forever...</p>`;
     }
+}
+
+function initDanceGame() {
+    let score = 0;
+    const dancer = document.getElementById('dancer');
+    dancer.onclick = () => {
+        score++;
+        document.getElementById('score').innerText = score;
+        dancer.style.transform = `translate(${Math.random()*40-20}px, ${Math.random()*40-20}px)`;
+    };
 }
 
 function closeBook() {
@@ -72,8 +56,9 @@ function closeBook() {
 }
 
 // --- THE CAT ---
-document.getElementById('cat').onclick = function() {
-    this.innerText = "🐾";
-    setTimeout(() => this.innerText = "🐈", 1000);
-    console.log("The white cat with blue eyes purrs.");
-};
+const cat = document.getElementById('cat');
+cat.addEventListener('click', () => {
+    cat.style.transform = "translateY(-20px)";
+    setTimeout(() => cat.style.transform = "translateY(0)", 200);
+    console.log("The white cat blinks its blue eyes at you.");
+});
