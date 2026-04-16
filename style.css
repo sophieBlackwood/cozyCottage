@@ -1,104 +1,85 @@
-/* Color Palette */
 :root {
-    --warm-brown: #956427;
-    --dark-wood: #6C4311;
-    --cream-light: #e4de77;
+    --warm-brown: #7a4f2a;
+    --dark-wood: #4a2e1a;
+    --cream-light: #f5e6c8;
     --fire-glow: #ffb347;
-    --moss-green: #64601d;
+    --moss-green: #5a7d4d;
     --autumn-orange: #d97a2b;
-    --soft-shadow: #444330;
+    --soft-shadow: #2a1f17;
 }
 
-body, html { 
-    margin: 0; padding: 0; width: 100%; height: 100%; 
-    overflow: hidden; font-family: "Georgia", serif;
-    background: #000;
+body, html { margin: 0; padding: 0; background: #000; overflow: hidden; font-family: 'Georgia', serif; }
+
+/* 🎨 PIXEL ART SCALING */
+img, .pixel-cottage, .cat {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
 }
 
-#game { width: 100%; height: 100%; transition: filter 3s ease; }
-
-/* Transitions */
-#fade {
-    position: fixed; inset: 0; background: black;
-    opacity: 0; pointer-events: none; z-index: 999; transition: opacity 0.8s;
-}
-
-.scene {
-    position: absolute; inset: 0; display: none; opacity: 0;
-    transition: opacity 1s ease-in-out;
-}
-.scene.active { display: flex; opacity: 1; flex-direction: column; align-items: center; justify-content: center; }
+#game { width: 100vw; height: 100vh; transition: filter 5s ease-in-out; }
 
 /* --- OUTSIDE --- */
-img, .cottage, .room {
-  image-rendering: pixelated; /* This keeps the edges sharp when scaling up */
-  image-rendering: crisp-edges;
-}
 #outside { background: var(--cream-light); }
-.ground { position: absolute; bottom: 0; width: 100%; height: 35%; background: var(--moss-green); }
-.path { 
-    position: absolute; bottom: 0; width: 100px; height: 150px; 
-    background: #999; clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+.ground { 
+    position: absolute; bottom: 0; width: 100%; height: 40%; 
+    background: var(--moss-green); display: flex; justify-content: center; 
 }
-.cottage {
-    width: 240px; height: 180px; background: var(--warm-brown);
-    position: relative; border: 6px solid var(--dark-wood); cursor: pointer;
+
+.cottage-container {
+    position: absolute; bottom: 50px; cursor: pointer;
+    transition: transform 0.3s ease;
 }
-.roof {
-    position: absolute; top: -95px; left: -30px;
-    border-left: 150px solid transparent; border-right: 150px solid transparent;
-    border-bottom: 95px solid var(--autumn-orange);
+.cottage-container:hover { transform: scale(1.05); }
+
+.pixel-cottage {
+    width: 300px; /* Scaled up from 100px while keeping pixels sharp */
+    height: auto;
 }
-.smoke {
-    position: absolute; top: -110px; right: 40px; width: 15px; height: 15px;
-    background: rgba(255,255,255,0.4); border-radius: 50%;
+
+/* Smoke effect */
+.smoke-stack {
+    position: absolute; top: 10px; right: 40px;
+    width: 12px; height: 12px; background: rgba(255,255,255,0.4);
+    border-radius: 50%; filter: blur(4px);
     animation: smokeRise 4s infinite linear;
 }
 
 /* --- INSIDE --- */
 #inside { background: var(--dark-wood); }
-.room {
-    width: 85%; height: 80%; background: var(--cream-light);
-    border: 12px solid var(--warm-brown); position: relative;
-    box-shadow: inset 0 0 100px var(--soft-shadow);
-}
-.fireplace {
-    position: absolute; bottom: 20px; left: 40px; width: 100px; height: 120px;
-    background: var(--dark-wood); border-radius: 5px 5px 0 0;
-}
-.table {
-    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-    width: 160px; height: 20px; background: var(--warm-brown);
-}
-.candle {
-    width: 8px; height: 25px; background: white; margin: -25px auto 0;
-    cursor: pointer; position: relative;
-}
-.candle.lit::before {
-    content: ''; position: absolute; top: -12px; left: -2px;
-    width: 12px; height: 15px; background: var(--fire-glow);
-    border-radius: 50% 50% 20% 50%; box-shadow: 0 0 15px var(--fire-glow);
-    animation: flicker 0.2s infinite alternate;
-}
-
-.cat { position: absolute; bottom: 20px; right: 40px; font-size: 40px; cursor: pointer; }
-
-/* --- BOOK WORLD --- */
-#bookOverlay {
+.interior-wrap {
     width: 80%; height: 80%; background: var(--cream-light);
-    border: 20px solid var(--warm-brown); padding: 40px; text-align: center;
-    color: var(--dark-wood); transform-origin: center; animation: pageFlip 0.6s ease;
+    border: 8px solid var(--warm-brown); position: relative;
+    box-shadow: inset 0 0 100px var(--soft-shadow);
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
 }
-.close-btn { margin-top: 20px; padding: 10px 20px; background: var(--autumn-orange); border: none; color: white; cursor: pointer; }
 
-/* --- EFFECTS --- */
-body.night #game { filter: brightness(0.4) saturate(0.8) hue-rotate(220deg); }
-.rain { position: fixed; width: 2px; height: 15px; background: rgba(255,255,255,0.3); z-index: 10; pointer-events: none; }
+.fireplace-glow {
+    position: absolute; bottom: 0; left: 10%;
+    width: 200px; height: 150px;
+    background: radial-gradient(circle, var(--fire-glow) 0%, transparent 70%);
+    opacity: 0.6; animation: flicker 0.1s infinite alternate;
+}
 
+.candle.lit::after {
+    content: ''; position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+    width: 10px; height: 14px; background: var(--fire-glow);
+    border-radius: 50% 50% 20% 50%; box-shadow: 0 0 15px var(--fire-glow);
+}
+
+/* --- ANIMATIONS --- */
 @keyframes smokeRise {
     0% { transform: translateY(0) scale(1); opacity: 0; }
-    50% { opacity: 0.7; }
-    100% { transform: translateY(-100px) scale(2.5); opacity: 0; }
+    20% { opacity: 0.5; }
+    100% { transform: translateY(-120px) scale(4); opacity: 0; }
 }
-@keyframes flicker { from { opacity: 0.8; } to { opacity: 1; } }
-@keyframes pageFlip { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+@keyframes flicker {
+    from { opacity: 0.4; } to { opacity: 0.7; }
+}
+
+.scene { display: none; width: 100%; height: 100%; position: absolute; }
+.scene.active { display: flex; align-items: center; justify-content: center; animation: fadeIn 1.5s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Night Filter */
+.night { filter: brightness(0.4) sepia(0.3) hue-rotate(200deg); }
