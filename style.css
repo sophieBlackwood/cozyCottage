@@ -1,220 +1,80 @@
 :root {
-    --warm-brown:#7a4f2a;
-    --dark-wood:#4a2e1a;
-    --cream-light:#f5e6c8;
-    --fire-glow:#ffb347;
-    --moss-green:#5a7d4d;
-    --autumn-orange:#d97a2b;
+    --warm-brown: #7a4f2a;
+    --dark-wood: #4a2e1a;
+    --cream-light: #f5e6c8;
+    --fire-glow: #ffb347;
+    --moss-green: #5a7d4d;
+    --autumn-orange: #d97a2b;
 }
 
-/* BASE */
-body,html{
-margin:0;
-overflow:hidden;
-background:#1a1a17;
+body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
+
+/* PIXEL RENDERING */
+img, .pixel-cottage, .pixel-tree, .white-cat {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
 }
 
-/* SCENES */
-.scene{
-position:absolute;
-width:100%;
-height:100%;
-opacity:0;
-transition:opacity .9s ease;
-pointer-events:none;
+#game {
+    width: 100vw; height: 100vh;
+    transition: transform 1.2s ease, filter 4s ease;
 }
 
-.scene.active{
-opacity:1;
-pointer-events:all;
+.scene { position: absolute; inset: 0; opacity: 0; transition: opacity .9s ease; pointer-events: none; }
+.scene.active { opacity: 1; pointer-events: all; }
+
+#fade { position: fixed; inset: 0; background: black; opacity: 0; transition: opacity .6s ease; z-index: 999; }
+
+/* SKY & CELESTIALS */
+#outside { 
+    background: linear-gradient(to bottom, #87CEEB, #f5e6c8); 
+    transition: background 10s ease; 
 }
 
-/* FADE LAYER (CINEMATIC TRANSITION) */
-#fade{
-position:fixed;
-inset:0;
-background:black;
-opacity:0;
-transition:opacity .6s ease;
-z-index:9999;
+#sun, #moon {
+    position: absolute; width: 60px; height: 60px; border-radius: 50%; z-index: 1;
+}
+#sun { background: radial-gradient(circle, #fff6b0, #ffb347); box-shadow: 0 0 50px #ffb347; }
+#moon { background: radial-gradient(circle, #ddd, #999); box-shadow: 0 0 20px white; opacity: 0; }
+
+/* GROUND & PROPS */
+.ground { position: absolute; bottom: 0; width: 100%; height: 45%; background: var(--moss-green); z-index: 3; }
+
+.cottage-wrap {
+    position: absolute; bottom: 42%; left: 50%;
+    transform: translateX(-50%) scale(4.2); /* Refined slightly smaller scale */
+    cursor: pointer; z-index: 5; transition: transform .3s ease;
 }
 
-/* CAMERA ZOOM EFFECT */
-#game{
-width:100vw;
-height:100vh;
-transition:transform 1.2s ease, filter 4s ease;
+.pixel-tree { position: absolute; bottom: 38%; transform: scale(4.2); z-index: 4; }
+.tree-left { left: 10%; }
+.tree-right { right: 10%; }
+
+.smoke-chimney {
+    position: absolute; top: 0; right: 10px; width: 8px; height: 8px;
+    background: rgba(255,255,255,0.4); border-radius: 50%; filter: blur(3px);
+    animation: smoke 4s infinite linear;
 }
 
-/* WHEN ENTERING HOUSE */
-.entering{
-transform:scale(1.08);
-}
-
-/* SKY */
-#outside::before{
-content:"";
-position:absolute;
-inset:0;
-z-index:0;
-transition:6s;
-background:linear-gradient(to bottom,#7ec8ff,#ffd9a3,#f7a35c);
-}
-
-.night #outside::before{
-background:linear-gradient(to bottom,#0b1026,#1a1f3a,#05060c);
-}
-
-/* SUN / MOON */
-#sun,#moon{
-position:absolute;
-width:60px;height:60px;
-border-radius:50%;
-z-index:1;
-}
-
-#sun{
-background:radial-gradient(circle,#fff6b0,#ffb347);
-box-shadow:0 0 40px rgba(255,180,80,.6);
-}
-
-#moon{
-background:#ddd;
-opacity:0;
-}
-
-/* SKY GLOW */
-.sky-glow{
-position:absolute;
-inset:0;
-opacity:0;
-background:radial-gradient(circle at 50% 70%,rgba(255,140,80,.35),transparent);
-z-index:1;
-}
-
-/* FOG */
-.fog-layer{
-position:absolute;
-width:200%;
-height:200px;
-left:-50%;
-opacity:.2;
-background:radial-gradient(ellipse,rgba(255,255,255,.2),transparent);
-animation:fog 40s linear infinite;
-z-index:2;
-pointer-events:none;
-}
-
-@keyframes fog{
-0%{transform:translateX(-10%);}
-100%{transform:translateX(10%);}
-}
-
-/* LEAVES */
-.leaf{
-position:absolute;
-width:10px;
-height:10px;
-background:#c97a2b;
-animation:fall linear forwards;
-}
-
-@keyframes fall{
-0%{transform:translateY(-20px) rotate(0);}
-100%{transform:translateY(120vh) rotate(360deg);opacity:0;}
-}
-
-/* HORIZON FOREST */
-.horizon-forest{
-position:absolute;
-bottom:45%;
-width:100%;
-height:120px;
-background:linear-gradient(to top,#2d3b2a,transparent);
-z-index:2;
-}
-
-/* GROUND */
-.ground{
-position:absolute;
-bottom:0;
-width:100%;
-height:45%;
-background:#5a7d4d;
-z-index:3;
-}
-
-/* COTTAGE */
-.cottage-wrap{
-position:absolute;
-bottom:42%;
-left:50%;
-transform:translateX(-50%) scale(5.2);
-cursor:pointer;
-z-index:5;
-transition:transform .3s ease;
-}
-
-.cottage-wrap:hover{
-transform:translateX(-50%) scale(5.4);
-}
-
-/* TREES */
-.pixel-tree{
-position:absolute;
-bottom:38%;
-transform:scale(4.2);
-z-index:4;
-animation:sway 6s infinite;
-}
-
-.tree-left{left:10%;}
-.tree-right{right:10%;}
-
-@keyframes sway{
-0%{transform:scale(4.2) rotate(0);}
-50%{transform:scale(4.2) rotate(2deg);}
-100%{transform:scale(4.2) rotate(0);}
-}
+@keyframes smoke { to { transform: translateY(-80px) scale(3); opacity: 0; } }
 
 /* INSIDE */
-#inside{
-display:flex;
-justify-content:center;
-align-items:center;
-background:#4a2e1a;
+#inside { background: var(--dark-wood); display: flex; justify-content: center; align-items: center; }
+.interior-bg { 
+    width: 85%; height: 80%; background: var(--cream-light); 
+    border: 12px solid var(--warm-brown); position: relative; 
 }
 
-.interior-bg{
-width:90%;
-height:85%;
-background:#f5e6c8;
-border:10px solid #7a4f2a;
-position:relative;
+.candle { width: 10px; height: 25px; background: #fff; cursor: pointer; margin: 0 auto; position: relative; }
+.candle.lit::after {
+    content: ''; position: absolute; top: -10px; left: 0; width: 10px; height: 12px;
+    background: var(--fire-glow); border-radius: 50% 50% 20% 50%; box-shadow: 0 0 15px var(--fire-glow);
 }
 
-/* CANDLE */
-.candle{
-width:10px;
-height:20px;
-background:white;
-cursor:pointer;
-}
+.white-cat { position: absolute; bottom: 20px; right: 60px; font-size: 40px; cursor: pointer; }
 
-/* CAT */
-.white-cat{
-position:absolute;
-bottom:20px;
-right:40px;
-font-size:30px;
-}
-
-/* BOOK */
-.book-ui{
-width:60%;
-height:60%;
-margin:auto;
-margin-top:10%;
-background:#f5e6c8;
-padding:20px;
+/* BOOK WORLD */
+.book-ui { 
+    width: 70%; height: 70%; margin: 5% auto; background: var(--cream-light); 
+    border: 15px solid var(--warm-brown); padding: 30px; text-align: center; color: var(--dark-wood);
 }
