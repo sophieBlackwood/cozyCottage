@@ -1,78 +1,54 @@
-:root {
-    --warm-brown: #7a4f2a;
-    --dark-wood: #4a2e1a;
-    --cream-light: #f5e6c8;
-}
-
+:root { --warm-brown: #7a4f2a; --dark-wood: #4a2e1a; --cream-light: #f5e6c8; }
 body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
-
-#game { width: 100vw; height: 100vh; transition: filter 4s ease; position: relative; }
-
-.scene { position: absolute; inset: 0; opacity: 0; transition: opacity .9s ease; }
+#game { width: 100vw; height: 100vh; position: relative; }
+.scene { position: absolute; inset: 0; opacity: 0; transition: opacity .9s ease; pointer-events: none; }
 .scene.active { opacity: 1; pointer-events: all; }
-
 #fade { position: fixed; inset: 0; background: black; opacity: 0; transition: opacity .6s ease; z-index: 999; }
 
-/* --- THE SKY --- */
-#sky-layer {
-    position: absolute; inset: 0;
-    transition: background 2s linear; /* Smooth blending */
-    z-index: 0;
-}
+/* SKY ENGINE */
+#sky-layer { position: absolute; inset: 0; transition: background 3s ease; z-index: 0; }
+#sun, #moon { position: absolute; width: 40px; height: 40px; border-radius: 50%; z-index: 1; filter: blur(1px); }
+#sun { background: #fffde1; box-shadow: 0 0 50px #ffcc33; }
+#moon { background: #f0f0f0; box-shadow: 0 0 20px #fff; opacity: 0; }
 
-#sun, #moon { 
-    position: absolute; width: 50px; height: 50px; border-radius: 50%; z-index: 1; 
-    filter: blur(2px);
-}
-#sun { background: #fff6b0; box-shadow: 0 0 60px #ffcc33; }
-#moon { background: #efefef; box-shadow: 0 0 20px #fff; opacity: 0; }
-
-/* --- GROUND & PERSPECTIVE --- */
+/* PERSPECTIVE GROUND */
 .ground { 
-    position: absolute; bottom: 0; width: 100%; height: 50%; /* Taller ground for more space */
+    position: absolute; bottom: 0; width: 100%; height: 55%; 
     background-image: url('ground.png');
-    background-repeat: repeat-x;
-    background-size: auto 100%;
+    background-repeat: repeat;
+    background-size: 300px 300px; /* Adjust this to make your 500px image look smaller/crisper */
     image-rendering: pixelated;
     z-index: 3; 
 }
 
 .cottage-wrap {
-    position: absolute; 
-    bottom: 72%; /* Pushed high up */
-    left: 50%;
-    transform: translateX(-50%) scale(3.5); /* Slightly smaller to match distance */
+    position: absolute; bottom: 78%; left: 50%; 
+    transform: translateX(-50%) scale(3); 
     cursor: pointer; z-index: 5;
 }
 
 .pixel-tree { position: absolute; image-rendering: pixelated; z-index: 4; }
-
-.horizon-tree { 
-    bottom: 70%; /* Right on the new high horizon */
-    transform: scale(1.4); /* Much smaller for distance */
-    filter: brightness(0.7);
-}
-
-.t1 { left: 8%; } .t2 { left: 22%; } .t3 { left: 38%; }
-.t4 { right: 30%; } .t5 { right: 12%; }
+.horizon-tree { bottom: 76%; transform: scale(1.1); filter: brightness(0.7); }
+.t1 { left: 5%; } .t2 { left: 20%; } .t3 { left: 40%; } .t4 { right: 35%; } .t5 { right: 10%; }
 
 .pebble-path {
-    position: absolute; bottom: 0; left: 50%; width: 100px; height: 85%;
-    background: linear-gradient(to top, rgba(0,0,0,0.2), transparent);
-    clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
-    transform: translateX(-50%); z-index: 3; opacity: 0.3;
+    position: absolute; bottom: 0; left: 50%; width: 80px; height: 85%;
+    background: linear-gradient(to top, rgba(0,0,0,0.15), transparent);
+    clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
+    transform: translateX(-50%); z-index: 3;
 }
 
-/* --- SMOKE & INTERIOR --- */
+/* SMOKE */
 .smoke-chimney {
     position: absolute; top: 0; right: 8px; width: 4px; height: 4px;
     background: rgba(255,255,255,0.3); border-radius: 50%;
-    animation: smoke 6s infinite linear;
+    animation: smoke 7s infinite linear;
 }
-@keyframes smoke { to { transform: translateY(-120px) scale(5); opacity: 0; } }
+@keyframes smoke { to { transform: translateY(-130px) scale(6); opacity: 0; } }
 
+/* INTERIOR */
 #inside { background: #1a120b; display: flex; justify-content: center; align-items: center; }
-.interior-bg { width: 85%; height: 80%; background: var(--cream-light); border: 12px solid var(--warm-brown); position: relative; }
-.white-cat { position: absolute; bottom: 20px; right: 60px; font-size: 40px; cursor: pointer; image-rendering: pixelated; }
-.candle { width: 8px; height: 20px; background: #fff; cursor: pointer; margin: 0 auto; }
-.candle.lit { background: #ffcc33; box-shadow: 0 0 15px #ffcc33; }
+.interior-bg { width: 80%; height: 75%; background: var(--cream-light); border: 12px solid var(--warm-brown); position: relative; }
+.white-cat { position: absolute; bottom: 20px; right: 60px; font-size: 35px; cursor: pointer; }
+.candle { width: 8px; height: 18px; background: #fff; cursor: pointer; margin: 0 auto; position: relative; }
+.candle.lit { background: #ffcc33; box-shadow: 0 0 10px #ffcc33; }
