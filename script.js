@@ -22,7 +22,7 @@ function skyLogic() {
     if (time > 1) time = 0;
 
     let x = 5 + time * 90;
-    let y = Math.sin(time * Math.PI) * -70 + 85;
+    let y = Math.sin(time * Math.PI) * -75 + 85; // Slightly higher sun arc
 
     sun.style.left = x + "%";
     sun.style.top = y + "%";
@@ -59,7 +59,7 @@ skyLogic();
 function sway() {
     document.querySelectorAll('.horizon-tree').forEach((t, i) => {
         const movement = Math.sin(Date.now() / 4000 + i) * 1.5;
-        t.style.transform = `scale(0.9) rotate(${movement}deg)`;
+        t.style.transform = `scale(0.8) rotate(${movement}deg)`;
     });
     requestAnimationFrame(sway);
 }
