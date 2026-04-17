@@ -11,34 +11,36 @@ body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: 
 #sun { background: #fffde1; box-shadow: 0 0 50px #ffcc33; }
 #moon { background: #f0f0f0; box-shadow: 0 0 20px #fff; opacity: 0; }
 
-/* GROUND - Increased height to meet house */
+/* GROUND - Comes up much further (75% of screen) */
 .ground { 
-    position: absolute; bottom: 0; width: 100%; height: 65%; 
+    position: absolute; bottom: 0; width: 100%; height: 75%; 
     background-image: url('ground.png');
     background-repeat: repeat;
-    background-size: 500px 500px; /* Full size of your asset */
+    background-size: 500px 500px;
     image-rendering: pixelated;
     z-index: 3; 
 }
 
+/* COTTAGE - Moved down to roughly halfway up the total screen */
 .cottage-wrap {
     position: absolute; 
-    bottom: 98%; /* Sits exactly on the horizon line */
+    bottom: 66%; /* Relative to the 75% tall ground, this is halfway up screen */
     left: 50%; 
     transform: translateX(-50%) scale(2.8); 
     cursor: pointer; z-index: 5;
 }
 
-/* TREES - Smaller and more frequent */
+/* TREES - Smaller and aligned with the cottage horizon */
 .pixel-tree { position: absolute; image-rendering: pixelated; z-index: 4; }
 .horizon-tree { 
-    bottom: 98%; 
-    transform: scale(0.9); 
+    bottom: 66%; 
+    transform: scale(0.8); 
     filter: brightness(0.7); 
 }
 
-.t1 { left: 2%; } .t2 { left: 12%; } .t3 { left: 25%; } .t4 { left: 38%; } 
-.t5 { right: 38%; } .t6 { right: 25%; } .t7 { right: 12%; } .t8 { right: 2%; }
+/* More Forest Density */
+.t1 { left: 2%; } .t2 { left: 10%; } .t3 { left: 18%; } .t4 { left: 26%; } .t5 { left: 34%; }
+.t6 { right: 34%; } .t7 { right: 26%; } .t8 { right: 18%; } .t9 { right: 10%; } .t10 { right: 2%; }
 
 /* SMOKE */
 .smoke-chimney {
